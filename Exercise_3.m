@@ -132,11 +132,17 @@ significant with a p-value of 7.3816e-27.
 ls_model = fitlm(x, t);
 
 %% By hand regression
+
+% runs faster, but does not provide all the statistics of fitlm
 n_sample = length(x);
+
+% estimation of parameters
 Phi = [ones(n_sample,1) x];
-mpinv = pinv(Phi' * Phi) * Phi';
+mpinv = pinv(Phi' * Phi) * Phi'; % pinv: pseudoinverse. The computation is 
+    %based on SVD(A) and any singular values less than a tolerance are treated as zero.
 w = mpinv * t;
 
+% estimation of target
 hat_t = Phi * w;
 bar_t = mean(t);
 SSR = sum((t-hat_t).^2);
